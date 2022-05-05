@@ -36,6 +36,23 @@ class WriterBase {
     }
   }
 
+  void WriteLigraAL(std::fstream &out) {
+      // header
+      out << "AdjacencyGraph" << std::endl;
+      out << g_.num_nodes() << std::endl;
+      out << g_.num_edges() << std::endl;
+      //  offsets
+      auto offsets = g_.VertexOffsets();
+      for (NodeID_ u = 0; u < g_.num_nodes(); u++) {
+          out << offsets[u] << std::endl;
+      }
+      // edges
+      for (NodeID_ u = 0; u < g_.num_nodes(); u++) {
+          for (DestID_ v : g_.out_neigh(u))
+              out << v << std::endl;
+      }
+  }
+
   void WriteSerializedGraph(std::fstream &out) {
     if (!std::is_same<NodeID_, SGID>::value) {
       std::cout << "serialized graphs only allowed for 32b IDs" << std::endl;
