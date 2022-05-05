@@ -15,18 +15,23 @@ using namespace std;
 int main(int argc, char* argv[]) {
   CLConvert cli(argc, argv, "converter");
   cli.ParseArgs();
+  WriteGraphOutputTypeT output
+      = cli.out_sg() ? WriteGraphSG
+      : cli.out_al() ? WriteGraphAL
+      : WriteGraphEL;
+
   if (cli.out_weighted()) {
     WeightedBuilder bw(cli);
     WGraph wg = bw.MakeGraph();
     wg.PrintStats();
     WeightedWriter ww(wg);
-    ww.WriteGraph(cli.out_filename(), cli.out_sg());
+    ww.WriteGraph(cli.out_filename(), output);
   } else {
     Builder b(cli);
     Graph g = b.MakeGraph();
     g.PrintStats();
     Writer w(g);
-    w.WriteGraph(cli.out_filename(), cli.out_sg());
+    w.WriteGraph(cli.out_filename(), output);
   }
   return 0;
 }

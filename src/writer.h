@@ -12,6 +12,14 @@
 
 #include "graph.h"
 
+/*
+ * Input to Writer::WriteGraph()
+ */
+typedef enum {
+    WriteGraphSG, // serialized graph
+    WriteGraphEL, // edge list
+    WriteGraphAL, // ligra adjacency list
+} WriteGraphOutputTypeT;
 
 /*
 GAP Benchmark Suite
@@ -85,7 +93,7 @@ class WriterBase {
     }
   }
 
-  void WriteGraph(std::string filename, bool serialized = false) {
+  void WriteGraph(std::string filename, WriteGraphOutputTypeT output_type = WriteGraphEL) {
     if (filename == "") {
       std::cout << "No output filename given (Use -h for help)" << std::endl;
       std::exit(-8);
@@ -95,10 +103,19 @@ class WriterBase {
       std::cout << "Couldn't write to file " << filename << std::endl;
       std::exit(-5);
     }
-    if (serialized)
-      WriteSerializedGraph(file);
-    else
-      WriteEL(file);
+    switch (output_type) {
+    case WriteGraphSG:
+        WriteSerializedGraph(file);
+        break;
+    case WriteGraphEL:
+        WriteEL(file);
+        break;
+    case WriteGraphAL:
+        WriteLigraAL(file);
+        break;
+    default:
+        break;
+    }
     file.close();
   }
 
