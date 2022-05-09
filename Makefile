@@ -32,6 +32,22 @@ include test/test.mk
 include benchmark/bench.mk
 
 
+graph = $(1)$(2)k$(3)
+graph-type   = $(findstring u,$(1))$(findstring g,$(1))
+graph-scale  = $(firstword $(subst k, ,$(subst u, ,$(subst g, ,$(1)))))
+graph-degree = $(lastword $(subst k, ,$(1)))
+
+include graphs.mk
+
+$(graphs): %.al: converter
+	$(eval type=$(call graph-type,$*))
+	$(eval scale=$(call graph-scale,$*))
+	$(eval degree=$(call graph-degree,$*))
+	./converter -l $@ -$(type) $(scale) -k $(degree)
+
+graphs: $(graphs)
+
 .PHONY: clean
 clean:
 	rm -f $(SUITE) test/out/*
+	rm -f $(graphs)

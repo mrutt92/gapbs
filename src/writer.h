@@ -48,7 +48,7 @@ class WriterBase {
       // header
       out << "AdjacencyGraph" << std::endl;
       out << g_.num_nodes() << std::endl;
-      out << g_.num_edges() << std::endl;
+      out << g_.num_edges_directed() << std::endl;
       //  offsets
       auto offsets = g_.VertexOffsets();
       for (NodeID_ u = 0; u < g_.num_nodes(); u++) {
