@@ -39,11 +39,17 @@ graph-degree = $(lastword $(subst k, ,$(1)))
 
 include graphs.mk
 
-$(graphs): %.al: converter
+$(filter %.al,$(graphs)): %.al: converter
 	$(eval type=$(call graph-type,$*))
 	$(eval scale=$(call graph-scale,$*))
 	$(eval degree=$(call graph-degree,$*))
 	./converter -l $@ -$(type) $(scale) -k $(degree)
+
+$(filter %.el,$(graphs)): %.el: converter
+	$(eval type=$(call graph-type,$*))
+	$(eval scale=$(call graph-scale,$*))
+	$(eval degree=$(call graph-degree,$*))
+	./converter -e $@ -$(type) $(scale) -k $(degree)
 
 graphs: $(graphs)
 
