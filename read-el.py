@@ -54,9 +54,6 @@ ax.set_yticks(yticks)
 odmax = int(out_degrees.max())
 if edge_list.startswith('g'):
     ax.set_xscale('log')
-    #xticks = [0] + [10**int(x) for x in range(int(np.ceil(np.log10(odmax))+1))]
-    #print(xticks)
-    #ax.set_xticks(xticks)
 else:
     xticks = np.arange(0, odmax+1, odmax/20)
     ax.set_xticks(xticks)
