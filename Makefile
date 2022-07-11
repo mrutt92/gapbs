@@ -51,6 +51,10 @@ $(filter %.el,$(graphs)): %.el: converter
 	$(eval degree=$(call graph-degree,$*))
 	./converter -e $@ -$(type) $(scale) -k $(degree)
 
+$(filter %.mtx,$(graphs)): %.mtx: %.el
+	$(eval scale=$(call graph-scale,$*))
+	python3 el2mtx.py $< $(scale) $*
+
 graphs: $(graphs)
 
 .PHONY: clean
