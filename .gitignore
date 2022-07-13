@@ -18,3 +18,4 @@ benchmark/graphs/raw/*
 *.el
 *.al
 *.csv
+*.mtx
