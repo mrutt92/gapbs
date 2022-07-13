@@ -33,8 +33,8 @@ include benchmark/bench.mk
 
 
 graph = $(1)$(2)k$(3)
-graph-type   = $(findstring u,$(1))$(findstring g,$(1))
-graph-scale  = $(firstword $(subst k, ,$(subst u, ,$(subst g, ,$(1)))))
+graph-type   = $(findstring u,$(1))$(findstring g,$(1))$(findstring z,$(1))
+graph-scale  = $(firstword $(subst k, ,$(subst z, ,$(subst u, ,$(subst g, ,$(1))))))
 graph-degree = $(lastword $(subst k, ,$(1)))
 
 include graphs.mk

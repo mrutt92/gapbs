@@ -12,7 +12,7 @@
 #include <string>
 #include <type_traits>
 #include <vector>
-
+#include "edge_list_type.h"
 
 /*
 GAP Benchmark Suite
@@ -30,14 +30,14 @@ class CLBase {
   int argc_;
   char** argv_;
   std::string name_;
-  std::string get_args_ = "f:g:hk:su:m";
+  std::string get_args_ = "f:g:hk:su:mz:";
   std::vector<std::string> help_strings_;
 
   int scale_ = -1;
   int degree_ = 16;
   std::string filename_ = "";
   bool symmetrize_ = false;
-  bool uniform_ = false;
+  EdgeListType edge_list_type_ = EdgeListRMAT;
   bool in_place_ = false;
 
   void AddHelpLine(char opt, std::string opt_arg, std::string text,
@@ -61,6 +61,7 @@ class CLBase {
     AddHelpLine('s', "", "symmetrize input edge list", "false");
     AddHelpLine('g', "scale", "generate 2^scale kronecker graph");
     AddHelpLine('u', "scale", "generate 2^scale uniform-random graph");
+    AddHelpLine('z', "scale", "generate 2^scale balanced random graph");
     AddHelpLine('k', "degree", "average degree for synthetic graph",
                 std::to_string(degree_));
     AddHelpLine('m', "", "reduces memory usage during graph building", "false");
@@ -84,12 +85,22 @@ class CLBase {
   void virtual HandleArg(signed char opt, char* opt_arg) {
     switch (opt) {
       case 'f': filename_ = std::string(opt_arg);           break;
-      case 'g': scale_ = atoi(opt_arg);                     break;
+      case 'g':
+          edge_list_type_ = EdgeListRMAT;
+          scale_ = atoi(opt_arg);
+          break;
       case 'h': PrintUsage();                               break;
       case 'k': degree_ = atoi(opt_arg);                    break;
       case 's': symmetrize_ = true;                         break;
-      case 'u': uniform_ = true; scale_ = atoi(opt_arg);    break;
+      case 'u':
+          edge_list_type_ = EdgeListUniform;
+          scale_ = atoi(opt_arg);
+          break;
       case 'm': in_place_ = true;                           break;
+      case 'z':
+          edge_list_type_ = EdgeListBalanced;
+          scale_ = atoi(opt_arg);
+          break;
     }
   }
 
@@ -105,7 +116,8 @@ class CLBase {
   int degree() const { return degree_; }
   std::string filename() const { return filename_; }
   bool symmetrize() const { return symmetrize_; }
-  bool uniform() const { return uniform_; }
+  bool uniform() const { return edge_list_type_ == EdgeListUniform; }
+  EdgeListType edge_list_type() const { return edge_list_type_; }
   bool in_place() const { return in_place_; }
 };
 

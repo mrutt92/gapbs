@@ -61,6 +61,38 @@ class Generator {
       el[e] = Edge(permutation[el[e].u], permutation[el[e].v]);
   }
 
+  EdgeList MakeBalancedEL() {
+      EdgeList el(num_edges_);
+      std::vector<int> nodes;
+
+      nodes.reserve(num_nodes_);
+
+      for (int i = 0; i < num_nodes_; i++)
+          nodes.push_back(i);
+
+      std::random_shuffle(nodes.begin(), nodes.end());
+
+      int degree = num_edges_/num_nodes_;
+      int rem = num_edges_%num_nodes_;
+
+      int e_i = 0;
+      int dst_i = 0;
+      for (int src = 0; src < num_nodes_; src++){
+          for (int e = 0; e < degree; e++) {
+              el[e_i++] = Edge(src, nodes[dst_i++ % num_nodes_]);
+          }
+      }
+
+      // fill out the remainder
+      for (int e = 0; e < rem; e++) {
+          int src = nodes[dst_i++%num_nodes_];
+          int dst = nodes[dst_i++%num_nodes_];
+          el[e_i++] = Edge(src, dst);
+      }
+
+      return el;
+  }
+
   EdgeList MakeUniformEL() {
     EdgeList el(num_edges_);
     #pragma omp parallel
@@ -121,6 +153,23 @@ class Generator {
       el = MakeUniformEL();
     else
       el = MakeRMatEL();
+    t.Stop();
+    PrintTime("Generate Time", t.Seconds());
+    return el;
+  }
+
+  EdgeList GenerateEL(EdgeListType elt) {
+    EdgeList el;
+    Timer t;
+    t.Start();
+
+    if (elt == EdgeListUniform)
+      el = MakeUniformEL();
+    else if (elt == EdgeListRMAT)
+      el = MakeRMatEL();
+    else
+      el = MakeBalancedEL();
+
     t.Stop();
     PrintTime("Generate Time", t.Seconds());
     return el;

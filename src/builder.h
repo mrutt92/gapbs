@@ -352,7 +352,7 @@ class BuilderBase {
         }
       } else if (cli_.scale() != -1) {
         Generator<NodeID_, DestID_> gen(cli_.scale(), cli_.degree());
-        el = gen.GenerateEL(cli_.uniform());
+        el = gen.GenerateEL(cli_.edge_list_type());
       }
       g = MakeGraphFromEL(el);
     }
