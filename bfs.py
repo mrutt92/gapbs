@@ -1,6 +1,7 @@
 import sys
 import argparse as argp
 import pandas as pd
+from graph import graph_from_edge_list
 
 parser = argp.ArgumentParser()
 parser.add_argument('edge_list')
@@ -12,25 +13,7 @@ edge_list = arguments.edge_list
 start = arguments.start
 
 # initialize neighbors
-neighbors = {}
-
-V = 0
-E = 0
-# read in the graph
-with open(edge_list,'r') as ifile:
-    for line in ifile:
-        src, dst = map(int,line.split(' '))
-        mjr = src if not arguments.reverse else dst
-        mnr = dst if not arguments.reverse else src
-        if mjr not in neighbors:
-            neighbors[mjr]  = [mnr]
-        else:
-            neighbors[mjr] += [mnr]
-        # update E and V
-        E += 1
-        V = max(V, mjr, mnr)
-# set V
-V=V+1
+V, E, neighbors = graph_from_edge_list(edge_list, arguments.reverse)
 
 # run bfs
 # algorithm variables
