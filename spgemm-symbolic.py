@@ -100,9 +100,10 @@ pd.set_option('display.max_rows',None)
 pd.set_option('display.max_columns',None)
 
 data = pd.DataFrame(stats_o)
-data.to_csv(mtx0 + '_x_' + mtx1 + '.stats_o.csv')
+#data.to_csv(mtx0 + '_x_' + mtx1 + '.stats_o.csv')
+data.to_csv('stats_o.csv')
 #print(data)
 
-data = pd.DataFrame(stats_i1)
-data.to_csv(mtx0 + '_x_' + mtx1 + '.stats_i1.csv')
+#data = pd.DataFrame(stats_i1)
+data.to_csv('stats_i1.csv')
 #print(data)
