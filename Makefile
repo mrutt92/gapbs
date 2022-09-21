@@ -43,13 +43,13 @@ $(filter %.al,$(graphs)): %.al: converter
 	$(eval type=$(call graph-type,$*))
 	$(eval scale=$(call graph-scale,$*))
 	$(eval degree=$(call graph-degree,$*))
-	./converter -l $@ -$(type) $(scale) -k $(degree)
+	./converter -s -l $@ -$(type) $(scale) -k $(degree)
 
 $(filter %.el,$(graphs)): %.el: converter
 	$(eval type=$(call graph-type,$*))
 	$(eval scale=$(call graph-scale,$*))
 	$(eval degree=$(call graph-degree,$*))
-	./converter -e $@ -$(type) $(scale) -k $(degree)
+	./converter -s -e $@ -$(type) $(scale) -k $(degree)
 
 $(filter %.mtx,$(graphs)): %.mtx: %.el
 	$(eval scale=$(call graph-scale,$*))

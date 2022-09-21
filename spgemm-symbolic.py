@@ -1,18 +1,20 @@
 import sys
 from statistics import median
 import argparse as argp
-from graph import graph_from_edge_list
+from graph import *
 import pandas as pd
 
 parser = argp.ArgumentParser()
-parser.add_argument('edge_list')
+parser.add_argument('mtx0')
+parser.add_argument('mtx1')
 
 arguments = parser.parse_args()
-edge_list = arguments.edge_list
+mtx0 = arguments.mtx0
+mtx1 = arguments.mtx1
 
 
-V_0i, E_0i, neighbors_0i = graph_from_edge_list(edge_list)
-V_1i, E_1i, neighbors_1i = (V_0i, E_0i, neighbors_0i)
+V_0i, E_0i, neighbors_0i = graph_from_mtx(mtx0)
+V_1i, E_1i, neighbors_1i = graph_from_mtx(mtx1)
 
 V_o = V_0i
 E_o = 0
@@ -98,9 +100,9 @@ pd.set_option('display.max_rows',None)
 pd.set_option('display.max_columns',None)
 
 data = pd.DataFrame(stats_o)
-data.to_csv(edge_list + '.stats_o.csv')
-print(data)
+data.to_csv(mtx0 + '_x_' + mtx1 + '.stats_o.csv')
+#print(data)
 
 data = pd.DataFrame(stats_i1)
-data.to_csv(edge_list + '.stats_i1.csv')
-print(data)
+data.to_csv(mtx0 + '_x_' + mtx1 + '.stats_i1.csv')
+#print(data)

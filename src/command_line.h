@@ -77,8 +77,8 @@ class CLBase {
       std::cout << "No graph input specified. (Use -h for help)" << std::endl;
       return false;
     }
-    if (scale_ != -1)
-      symmetrize_ = true;
+    // if (scale_ != -1)
+    //   symmetrize_ = true;
     return true;
   }
 
